@@ -1,5 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.ScriptableObjects;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,10 @@ public class Skilling : MonoBehaviour
     Monster monsterInfo;
     private bool monsterTurn, playerTurn;
 
+    public Transform treePanelTransform;
+    public List<TreeSO> trees;
+    public List<PanelUpdater> treePanels;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,10 +42,6 @@ public class Skilling : MonoBehaviour
         CheckPanels();
         skillActive = -1;
 
-        evergreenSpeed = 3.0f;
-        pineSpeed = 4.0f;
-        birchSpeed = 5.0f;
-
         ironSpeed = 3.2f;
         coalSpeed = 4.5f;
         goldSpeed = 6.0f;
@@ -49,6 +50,14 @@ public class Skilling : MonoBehaviour
         refreshReductions = true;
 
         inCombat = false;
+
+        foreach (var tree in trees.OrderBy(c => c.UnlockLevel))
+        {
+            var newTree = Instantiate(Resources.Load("Prefabs/UI/TreePanel") as GameObject, treePanelTransform);
+            var treePanel = newTree.GetComponent<PanelUpdater>();
+            treePanel.UpdatePanel(tree);
+            treePanels.Add(treePanel);
+        }
 }
 
     // Update is called once per frame
@@ -249,6 +258,11 @@ public class Skilling : MonoBehaviour
             }
         }
     }
+
+    //public void ActivateWoodcutting(TreeSO tree)
+    //{
+
+    //}
 
     public void ActivateSkill(int buttonID)
     {

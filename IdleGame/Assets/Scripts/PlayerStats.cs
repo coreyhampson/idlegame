@@ -30,23 +30,33 @@ public class PlayerStats : MonoBehaviour
     private string pickaxeType = "Bronze";
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            Destroy(instance);
+            instance = this;
+        }
 
         expNextLevel = new int[maxLevel];
         expNextLevel[1] = baseEXP;
         int increment = 2;
 
-        for(int i = 2; i < expNextLevel.Length; i++)
+        for (int i = 2; i < expNextLevel.Length; i++)
         {
-            expNextLevel[i] = (int) Percentage(expNextLevel[i - 1]) + expNextLevel[i - 1] + increment;
+            expNextLevel[i] = (int)Percentage(expNextLevel[i - 1]) + expNextLevel[i - 1] + increment;
             increment++;
         }
-        if(PlayerPrefs.HasKey("ExistingPlayer"))
+        if (PlayerPrefs.HasKey("ExistingPlayer"))
         {
             LoadStats();
         }
+    }
+
+    void Start()
+    {
+
+
     }
 
     // Update is called once per frame
@@ -69,6 +79,8 @@ public class PlayerStats : MonoBehaviour
         {
             woodcuttingEXP -= expNextLevel[woodcuttingLevel];
             woodcuttingLevel++;
+
+            Skilling.instance.treePanels.ForEach(c => c.UpdateLockStatus());
         }
         if(woodcuttingLevel > maxLevel)
         {
