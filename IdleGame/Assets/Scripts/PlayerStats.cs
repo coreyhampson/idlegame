@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,7 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        //PlayerPrefs.DeleteAll();
         if(instance == null)
         {
             Destroy(instance);

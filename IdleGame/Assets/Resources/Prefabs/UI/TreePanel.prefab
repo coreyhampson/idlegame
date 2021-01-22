@@ -749,7 +749,9 @@ MonoBehaviour:
   txtSpeed: {fileID: 3943639505447557920}
   txtLocked: {fileID: 3435061156541266529}
   btnCut: {fileID: 3943639504069034106}
+  sliderExp: {fileID: 3943639505677395045}
   treeContent: {fileID: 3705919169682679521}
+  treeSO: {fileID: 0}
 --- !u!1 &3943639505447557926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,7 +1091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.3679245, g: 0.33495015, b: 0.33495015, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

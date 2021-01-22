@@ -30,28 +30,38 @@ public class Skilling : MonoBehaviour
     private bool monsterTurn, playerTurn;
 
     public Transform treePanelTransform;
-    public List<TreeSO> trees;
+    public List<WoodcuttingSO> woodcuttingSOs;
     public List<PanelUpdater> treePanels;
 
+    private bool woodcuttingSkillActive;
+    private PanelUpdater woodcuttingPanel;
+
+    private void Awake()
+    {
+        if(instance == null || instance != null && instance != this)
+        {
+            instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
+        //instance = this;
 
-        skillTimer = 0f;
-        CheckPanels();
-        skillActive = -1;
+        //skillTimer = 0f;
+        //CheckPanels();
+        //skillActive = -1;
 
-        ironSpeed = 3.2f;
-        coalSpeed = 4.5f;
-        goldSpeed = 6.0f;
+        //ironSpeed = 3.2f;
+        //coalSpeed = 4.5f;
+        //goldSpeed = 6.0f;
 
         refreshValues = true;
         refreshReductions = true;
 
-        inCombat = false;
+        //inCombat = false;
 
-        foreach (var tree in trees.OrderBy(c => c.UnlockLevel))
+        foreach (var tree in woodcuttingSOs.OrderBy(c => c.UnlockLevel))
         {
             var newTree = Instantiate(Resources.Load("Prefabs/UI/TreePanel") as GameObject, treePanelTransform);
             var treePanel = newTree.GetComponent<PanelUpdater>();
@@ -97,349 +107,367 @@ public class Skilling : MonoBehaviour
                 miningPerSecond[1].text = coalSpeed.ToString("F2") + " Seconds";
                 miningPerSecond[2].text = goldSpeed.ToString("F2") + " Seconds";
             }
-
-            CheckPanels();
         }
 
-        if(skillActive > -1)
+        if (woodcuttingSkillActive && woodcuttingPanel != null)
         {
-            if (skillActive == 0) // Evergreen Tree
-            {
-                if(skillTimer <= evergreenSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[0].maxValue = evergreenSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[0].value = 0f;
-                    GameManager.instance.AddItem("Evergreen Log", 1);
-                    PlayerStats.instance.AddWoodcuttingExperience(10);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 1) // Pine Tree
-            {
-                if(skillTimer <= pineSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[1].maxValue = pineSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[1].value = 0f;
-                    GameManager.instance.AddItem("Pine Log", 1);
-                    PlayerStats.instance.AddWoodcuttingExperience(15);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 2) // Birch Tree
-            {
-                if(skillTimer <= birchSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[2].maxValue = birchSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[2].value = 0f;
-                    GameManager.instance.AddItem("Birch Log", 1);
-                    PlayerStats.instance.AddWoodcuttingExperience(22);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 3) // Iron Rock
-            {
-                if(skillTimer <= ironSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[3].maxValue = ironSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[3].value = 0f;
-                    GameManager.instance.AddItem("Iron Ore", 1);
-                    PlayerStats.instance.AddMiningExperience(10);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 4) // Coal Rock
-            {
-                if(skillTimer <= coalSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[4].maxValue = coalSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[4].value = 0f;
-                    GameManager.instance.AddItem("Coal Ore", 1);
-                    PlayerStats.instance.AddMiningExperience(15);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 5) // Gold Rock
-            {
-                if(skillTimer <= goldSpeed)
-                {
-                    skillTimer += Time.deltaTime;
-                    skillSliders[5].maxValue = goldSpeed;
-                    skillSliders[skillActive].value = skillTimer;
-                }
-                else
-                {
-                    skillTimer = 0f;
-                    skillSliders[5].value = 0f;
-                    GameManager.instance.AddItem("Gold Ore", 1);
-                    PlayerStats.instance.AddMiningExperience(22);
-                    PlayerStats.instance.SaveStats();
-                    refreshValues = true;
-                }
-            }
-            if(skillActive == 6) // Fluffy Combat
-            {
-                fightTimer += Time.deltaTime;
+            woodcuttingPanel.UpdateSlider();
+        }
 
-                if(inCombat)
-                {
-                    inCombat = false;
-                    newMonster = Instantiate(monster);
-                    monsterInfo = newMonster.GetComponent<Monster>();
+        //if(skillActive > -1)
+        //{
+        //    if (skillActive == 0) // Evergreen Tree
+        //    {
+        //        if(skillTimer <= evergreenSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[0].maxValue = evergreenSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[0].value = 0f;
+        //            GameManager.instance.AddItem("Evergreen Log", 1);
+        //            PlayerStats.instance.AddWoodcuttingExperience(10);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 1) // Pine Tree
+        //    {
+        //        if(skillTimer <= pineSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[1].maxValue = pineSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[1].value = 0f;
+        //            GameManager.instance.AddItem("Pine Log", 1);
+        //            PlayerStats.instance.AddWoodcuttingExperience(15);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 2) // Birch Tree
+        //    {
+        //        if(skillTimer <= birchSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[2].maxValue = birchSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[2].value = 0f;
+        //            GameManager.instance.AddItem("Birch Log", 1);
+        //            PlayerStats.instance.AddWoodcuttingExperience(22);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 3) // Iron Rock
+        //    {
+        //        if(skillTimer <= ironSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[3].maxValue = ironSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[3].value = 0f;
+        //            GameManager.instance.AddItem("Iron Ore", 1);
+        //            PlayerStats.instance.AddMiningExperience(10);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 4) // Coal Rock
+        //    {
+        //        if(skillTimer <= coalSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[4].maxValue = coalSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[4].value = 0f;
+        //            GameManager.instance.AddItem("Coal Ore", 1);
+        //            PlayerStats.instance.AddMiningExperience(15);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 5) // Gold Rock
+        //    {
+        //        if(skillTimer <= goldSpeed)
+        //        {
+        //            skillTimer += Time.deltaTime;
+        //            skillSliders[5].maxValue = goldSpeed;
+        //            skillSliders[skillActive].value = skillTimer;
+        //        }
+        //        else
+        //        {
+        //            skillTimer = 0f;
+        //            skillSliders[5].value = 0f;
+        //            GameManager.instance.AddItem("Gold Ore", 1);
+        //            PlayerStats.instance.AddMiningExperience(22);
+        //            PlayerStats.instance.SaveStats();
+        //            refreshValues = true;
+        //        }
+        //    }
+        //    if(skillActive == 6) // Fluffy Combat
+        //    {
+        //        fightTimer += Time.deltaTime;
 
-                    monsterInfo.SetName("Fluffy");
-                    monsterInfo.SetLevel(7);
-                    monsterInfo.SetMaxHealth(100);
-                    monsterInfo.SetHealth(100);
-                    monsterInfo.SetMaxHit(16);
-                    monsterInfo.SetHitChance(35);
-                    PlayerStats.instance.hitChance = 35;
-                }
-                if(PlayerStats.instance.currentHealth < 1 || monsterInfo.GetHealth() < 1)
-                {
-                    skillActive = -1;
-                    DestroyImmediate(newMonster);
-                    monsterInfo = null;
-                    harvestButtons[6].GetComponentInChildren<Text>().text = "Fight";
-                    inCombat = false;
-                    playerTurn = false;
-                    monsterTurn = false;
-                    fightTimer = 0f;
-                    PlayerStats.instance.currentHealth = PlayerStats.instance.maxHealth;
-                    refreshValues = true;
-                    skillSliders[6].value = 100;
-                    skillSliders[6].maxValue = 100;
-                    return;
-                }
-                if(fightTimer >= 3f)
-                {
-                    int hit = (int)ComparePercentage(monsterInfo.GetHitChance(), PlayerStats.instance.defenceLevel);
-                    monsterInfo.SetHitChance(monsterInfo.GetHitChance() - hit);
+        //        if(inCombat)
+        //        {
+        //            inCombat = false;
+        //            newMonster = Instantiate(monster);
+        //            monsterInfo = newMonster.GetComponent<Monster>();
 
-                    int playerHit = (int)ComparePercentage(PlayerStats.instance.hitChance, monsterInfo.GetLevel());
-                    PlayerStats.instance.hitChance = 35 - playerHit;
+        //            monsterInfo.SetName("Fluffy");
+        //            monsterInfo.SetLevel(7);
+        //            monsterInfo.SetMaxHealth(100);
+        //            monsterInfo.SetHealth(100);
+        //            monsterInfo.SetMaxHit(16);
+        //            monsterInfo.SetHitChance(35);
+        //            PlayerStats.instance.hitChance = 35;
+        //        }
+        //        if(PlayerStats.instance.currentHealth < 1 || monsterInfo.GetHealth() < 1)
+        //        {
+        //            skillActive = -1;
+        //            DestroyImmediate(newMonster);
+        //            monsterInfo = null;
+        //            harvestButtons[6].GetComponentInChildren<Text>().text = "Fight";
+        //            inCombat = false;
+        //            playerTurn = false;
+        //            monsterTurn = false;
+        //            fightTimer = 0f;
+        //            PlayerStats.instance.currentHealth = PlayerStats.instance.maxHealth;
+        //            refreshValues = true;
+        //            skillSliders[6].value = 100;
+        //            skillSliders[6].maxValue = 100;
+        //            return;
+        //        }
+        //        if(fightTimer >= 3f)
+        //        {
+        //            int hit = (int)ComparePercentage(monsterInfo.GetHitChance(), PlayerStats.instance.defenceLevel);
+        //            monsterInfo.SetHitChance(monsterInfo.GetHitChance() - hit);
 
-                    BeginCombat();
-                }
-            }
+        //            int playerHit = (int)ComparePercentage(PlayerStats.instance.hitChance, monsterInfo.GetLevel());
+        //            PlayerStats.instance.hitChance = 35 - playerHit;
+
+        //            BeginCombat();
+        //        }
+        //    }
+        //}
+    }
+
+    public void ActivateWoodcutting(PanelUpdater panel)
+    {
+        if (!woodcuttingSkillActive || woodcuttingPanel != panel)
+        {
+            woodcuttingPanel = panel;
+            woodcuttingSkillActive = true;
+        }
+
+        treePanels.Where(c => c != panel).ToList().ForEach(c => c.SetWoodcutting(false));
+    }
+
+    public void DeactivateWoodcutting(PanelUpdater panel)
+    {
+        if (woodcuttingSkillActive && woodcuttingPanel == panel)
+        {
+            woodcuttingPanel = null;
+            woodcuttingSkillActive = false;
         }
     }
 
-    //public void ActivateWoodcutting(TreeSO tree)
+    //public void ActivateSkill(int buttonID)
     //{
-
+    //    if(buttonID == 0) // Evergreen Tree
+    //    {
+    //        if(skillActive > -1 && skillActive != 0)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 0)
+    //        {
+    //            skillActive = 0;
+    //            harvestButtons[0].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[0].GetComponentInChildren<Text>().text = "Cut";
+    //            skillTimer = 0f;
+    //            skillSliders[0].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 1) // Pine Tree
+    //    {
+    //        if(skillActive > -1 && skillActive != 1)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 1)
+    //        {
+    //            skillActive = 1;
+    //            harvestButtons[1].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[1].GetComponentInChildren<Text>().text = "Cut";
+    //            skillTimer = 0f;
+    //            skillSliders[1].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 2) // Birch Tree
+    //    {
+    //        if(skillActive > -1 && skillActive != 2)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 2)
+    //        {
+    //            skillActive = 2;
+    //            harvestButtons[2].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[2].GetComponentInChildren<Text>().text = "Cut";
+    //            skillTimer = 0f;
+    //            skillSliders[2].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 3) // Iron Rock
+    //    {
+    //        if(skillActive > -1 && skillActive != 3)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 3)
+    //        {
+    //            skillActive = 3;
+    //            harvestButtons[3].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[3].GetComponentInChildren<Text>().text = "Mine";
+    //            skillTimer = 0f;
+    //            skillSliders[3].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 4) // Coal Rock
+    //    {
+    //        if(skillActive > -1 && skillActive != 4)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 4)
+    //        {
+    //            skillActive = 4;
+    //            harvestButtons[4].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[4].GetComponentInChildren<Text>().text = "Mine";
+    //            skillTimer = 0f;
+    //            skillSliders[4].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 5) // Gold Rock
+    //    {
+    //        if (skillActive > -1 && skillActive != 5)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if (skillActive == -1 && skillActive != 5)
+    //        {
+    //            skillActive = 5;
+    //            harvestButtons[5].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            harvestButtons[4].GetComponentInChildren<Text>().text = "Mine";
+    //            skillTimer = 0f;
+    //            skillSliders[5].value = 0f;
+    //        }
+    //    }
+    //    if(buttonID == 6) // Fluffy Combat
+    //    {
+    //        if(skillActive > -1 && skillActive != 6)
+    //        {
+    //            Debug.LogError("You can only train one skill at a time.");
+    //            return;
+    //        }
+    //        if(skillActive == -1 && skillActive != 6)
+    //        {
+    //            skillActive = 6;
+    //            inCombat = true;
+    //            harvestButtons[6].GetComponentInChildren<Text>().text = "Stop";
+    //        }
+    //        else
+    //        {
+    //            skillActive = -1;
+    //            DestroyImmediate(newMonster);
+    //            monsterInfo = null;
+    //            harvestButtons[6].GetComponentInChildren<Text>().text = "Fight";
+    //            inCombat = false;
+    //            playerTurn = false;
+    //            monsterTurn = false;
+    //            fightTimer = 0f;
+    //            skillSliders[6].value = 100;
+    //            skillSliders[6].maxValue = 100;
+    //        }
+    //    }
     //}
 
-    public void ActivateSkill(int buttonID)
-    {
-        if(buttonID == 0) // Evergreen Tree
-        {
-            if(skillActive > -1 && skillActive != 0)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 0)
-            {
-                skillActive = 0;
-                harvestButtons[0].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[0].GetComponentInChildren<Text>().text = "Cut";
-                skillTimer = 0f;
-                skillSliders[0].value = 0f;
-            }
-        }
-        if(buttonID == 1) // Pine Tree
-        {
-            if(skillActive > -1 && skillActive != 1)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 1)
-            {
-                skillActive = 1;
-                harvestButtons[1].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[1].GetComponentInChildren<Text>().text = "Cut";
-                skillTimer = 0f;
-                skillSliders[1].value = 0f;
-            }
-        }
-        if(buttonID == 2) // Birch Tree
-        {
-            if(skillActive > -1 && skillActive != 2)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 2)
-            {
-                skillActive = 2;
-                harvestButtons[2].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[2].GetComponentInChildren<Text>().text = "Cut";
-                skillTimer = 0f;
-                skillSliders[2].value = 0f;
-            }
-        }
-        if(buttonID == 3) // Iron Rock
-        {
-            if(skillActive > -1 && skillActive != 3)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 3)
-            {
-                skillActive = 3;
-                harvestButtons[3].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[3].GetComponentInChildren<Text>().text = "Mine";
-                skillTimer = 0f;
-                skillSliders[3].value = 0f;
-            }
-        }
-        if(buttonID == 4) // Coal Rock
-        {
-            if(skillActive > -1 && skillActive != 4)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 4)
-            {
-                skillActive = 4;
-                harvestButtons[4].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[4].GetComponentInChildren<Text>().text = "Mine";
-                skillTimer = 0f;
-                skillSliders[4].value = 0f;
-            }
-        }
-        if(buttonID == 5) // Gold Rock
-        {
-            if (skillActive > -1 && skillActive != 5)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if (skillActive == -1 && skillActive != 5)
-            {
-                skillActive = 5;
-                harvestButtons[5].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                harvestButtons[4].GetComponentInChildren<Text>().text = "Mine";
-                skillTimer = 0f;
-                skillSliders[5].value = 0f;
-            }
-        }
-        if(buttonID == 6) // Fluffy Combat
-        {
-            if(skillActive > -1 && skillActive != 6)
-            {
-                Debug.LogError("You can only train one skill at a time.");
-                return;
-            }
-            if(skillActive == -1 && skillActive != 6)
-            {
-                skillActive = 6;
-                inCombat = true;
-                harvestButtons[6].GetComponentInChildren<Text>().text = "Stop";
-            }
-            else
-            {
-                skillActive = -1;
-                DestroyImmediate(newMonster);
-                monsterInfo = null;
-                harvestButtons[6].GetComponentInChildren<Text>().text = "Fight";
-                inCombat = false;
-                playerTurn = false;
-                monsterTurn = false;
-                fightTimer = 0f;
-                skillSliders[6].value = 100;
-                skillSliders[6].maxValue = 100;
-            }
-        }
-    }
+    //public void CheckPanels()
+    //{
+    //    if(PlayerStats.instance.woodcuttingLevel >= 10) // Unlock Pine Tree
+    //    {
+    //        skillPanels[0].SetActive(true);
+    //        unlockPanels[0].SetActive(false);
 
-    public void CheckPanels()
-    {
-        if(PlayerStats.instance.woodcuttingLevel >= 10) // Unlock Pine Tree
-        {
-            skillPanels[0].SetActive(true);
-            unlockPanels[0].SetActive(false);
+    //        if(PlayerStats.instance.woodcuttingLevel >= 25) // Unlock Birch Tree
+    //        {
+    //            skillPanels[1].SetActive(true);
+    //            unlockPanels[1].SetActive(false);
+    //        }
+    //    }
+    //    if(PlayerStats.instance.miningLevel >= 10) // Unlock Iron Rock
+    //    {
+    //        skillPanels[2].SetActive(true);
+    //        unlockPanels[2].SetActive(false);
 
-            if(PlayerStats.instance.woodcuttingLevel >= 25) // Unlock Birch Tree
-            {
-                skillPanels[1].SetActive(true);
-                unlockPanels[1].SetActive(false);
-            }
-        }
-        if(PlayerStats.instance.miningLevel >= 10) // Unlock Iron Rock
-        {
-            skillPanels[2].SetActive(true);
-            unlockPanels[2].SetActive(false);
-
-            if (PlayerStats.instance.miningLevel >= 25) // Unlock Gold Rock
-            {
-                skillPanels[3].SetActive(true);
-                unlockPanels[3].SetActive(false);
-            }
-        }
-    }
+    //        if (PlayerStats.instance.miningLevel >= 25) // Unlock Gold Rock
+    //        {
+    //            skillPanels[3].SetActive(true);
+    //            unlockPanels[3].SetActive(false);
+    //        }
+    //    }
+    //}
 
     public double ComparePercentage(float number, float percentvalue)
     {

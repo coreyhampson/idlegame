@@ -10,23 +10,25 @@ public class PanelUpdater : MonoBehaviour
     public Text txtSpeed;
     public Text txtLocked;
     public Button btnCut;
+    public Slider sliderExp;
 
     [Header("Groups")]
     public GameObject treeContent;
+    public BaseSkillItemSO skillItemSO;
 
-    private TreeSO treeSO;
-    private const string lockedText = "Unlocks at Level {0}";
-    private bool isCutting;
+    private const string lockedText = "Unlocks at Level {0}!";
+    private bool isActive;
+    private float skillTimer = 0f;
 
-    private bool isLocked => PlayerStats.instance.woodcuttingLevel < treeSO.UnlockLevel;
+    private bool isLocked => PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
     
-    public void UpdatePanel(TreeSO tree)
+    public void UpdatePanel(BaseSkillItemSO skillItem)
     {
-        treeSO = tree;
+        skillItemSO = skillItem;
 
-        txtName.text = treeSO.name;
-        txtExpAmount.text = treeSO.ExpAmount.ToString();
-        txtSpeed.text = treeSO.Speed.ToString("F2");
+        txtName.text = skillItemSO.Name;
+        txtExpAmount.text = skillItemSO.ExpAmount.ToString();
+        txtSpeed.text = $"{skillItemSO.Speed:F2} Second{(skillItemSO.Speed > 1 ? "s" : string.Empty)}";
         btnCut.onClick.AddListener(ToggleWoodcutting);
 
         UpdateLockStatus();
@@ -34,10 +36,59 @@ public class PanelUpdater : MonoBehaviour
 
     void ToggleWoodcutting()
     {
-        isCutting = !isCutting;
+        isActive = !isActive;
+        SetWoodcutting(isActive);
+    }
 
-        btnCut.GetComponentInChildren<Text>().text = isCutting ? "Stop" : "Cut";
-        Skilling.instance.ActivateSkill(0);
+    public void SetWoodcutting(bool setWoodcutting)
+    {
+        btnCut.GetComponentInChildren<Text>().text = setWoodcutting ? "Stop" : "Cut";
+
+        if (setWoodcutting)
+        {
+            isActive = true;
+            Skilling.instance.ActivateWoodcutting(this);
+        }
+        else
+        {
+            isActive = false;
+            Skilling.instance.DeactivateWoodcutting(this);
+            UpdateSlider();
+        }
+    }
+
+    public void UpdateSlider()
+    {
+        if (skillTimer <= skillItemSO.Speed)
+        {
+            if (isActive)
+            {
+                skillTimer += Time.deltaTime;
+                sliderExp.maxValue = skillItemSO.Speed;
+                sliderExp.value = skillTimer;
+            }
+            else
+            {
+                skillTimer = 0f;
+                sliderExp.value = 0f;
+            }
+        }
+        else
+        {
+            skillTimer = 0f;
+            sliderExp.value = 0f;
+
+            switch (skillItemSO.GetType().Name)
+            {
+                case "WoodcuttingSO":
+                    GameManager.instance.AddItem("Evergreen Log", 1);
+                    PlayerStats.instance.AddWoodcuttingExperience(skillItemSO.ExpAmount);
+                    PlayerStats.instance.SaveStats();
+                    break;
+            }
+
+            Skilling.instance.refreshValues = true;
+        }
     }
 
     public void UpdateLockStatus()
@@ -46,7 +97,7 @@ public class PanelUpdater : MonoBehaviour
         {
             treeContent.SetActive(false);
             txtLocked.gameObject.SetActive(true);
-            txtLocked.text = string.Format(lockedText, treeSO.UnlockLevel);
+            txtLocked.text = string.Format(lockedText, skillItemSO.UnlockLevel);
         }
         else
         {
