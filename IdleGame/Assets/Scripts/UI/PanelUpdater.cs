@@ -20,7 +20,7 @@ public class PanelUpdater : MonoBehaviour
     private bool isActive;
     private float skillTimer = 0f;
 
-    private bool isLocked => PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
+    public bool isLocked => PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
     
     public void UpdatePanel(BaseSkillItemSO skillItem)
     {

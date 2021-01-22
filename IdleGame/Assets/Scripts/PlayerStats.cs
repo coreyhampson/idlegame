@@ -33,8 +33,8 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        //PlayerPrefs.DeleteAll();
-        if(instance == null)
+        PlayerPrefs.DeleteAll();
+        if (instance == null)
         {
             Destroy(instance);
             instance = this;
@@ -82,7 +82,7 @@ public class PlayerStats : MonoBehaviour
             woodcuttingEXP -= expNextLevel[woodcuttingLevel];
             woodcuttingLevel++;
 
-            Skilling.instance.treePanels.ForEach(c => c.UpdateLockStatus());
+            Skilling.instance.woodcuttingPanels.Where(c => c.isLocked).ToList().ForEach(c => c.UpdateLockStatus());
         }
         if(woodcuttingLevel > maxLevel)
         {

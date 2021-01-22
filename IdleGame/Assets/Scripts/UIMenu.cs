@@ -41,6 +41,8 @@ public class UIMenu : MonoBehaviour
         dialogOpen = false;
         coinAmount.text = "Gold Coins:\n" + PlayerStats.instance.money.ToString();
         itemUsageButtons[0].interactable = false;
+
+        ToggleWindow(3);
     }
 
     // Update is called once per frame
