@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e306dc390896e24a81f714b8a439888, type: 3}
-  m_Name: Pine
+  m_Name: Test Tree
   m_EditorClassIdentifier: 
-  Name: Pine Tree
-  Speed: 7
-  UnlockLevel: 10
-  ExpAmount: 20
+  Name: Test Tree
+  Speed: 1
+  UnlockLevel: 0
+  ExpAmount: 100

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Pine
   m_EditorClassIdentifier: 
   Name: Pine Tree
-  Speed: 7
+  Speed: 5
   UnlockLevel: 10
   ExpAmount: 20

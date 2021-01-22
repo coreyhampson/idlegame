@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Evergreen Tree
   Speed: 3
-  UnlockLevel: 0
+  UnlockLevel: 1
   ExpAmount: 10

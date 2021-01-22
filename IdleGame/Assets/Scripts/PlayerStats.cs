@@ -82,7 +82,7 @@ public class PlayerStats : MonoBehaviour
             woodcuttingEXP -= expNextLevel[woodcuttingLevel];
             woodcuttingLevel++;
 
-            Skilling.instance.woodcuttingPanels.Where(c => c.isLocked).ToList().ForEach(c => c.UpdateLockStatus());
+            Skilling.instance.woodcuttingPanels.ForEach(c => c.UpdateLockStatus());
         }
         if(woodcuttingLevel > maxLevel)
         {
