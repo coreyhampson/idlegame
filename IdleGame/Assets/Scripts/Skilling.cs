@@ -11,8 +11,7 @@ public class Skilling : MonoBehaviour
     public Slider playerHealth;
     //private float skillTimer;
     //private float fightTimer;
-    public Button[] harvestButtons;
-    public int skillActive = -1;
+    //public int skillActive = -1;
     public Text[] expNextLevel;
     public Text[] toolTypes;
     public Text woodcuttingLevel, miningLevel, attackLevel, strengthLevel, defenceLevel;
@@ -22,19 +21,19 @@ public class Skilling : MonoBehaviour
     //public GameObject[] skillPanels, unlockPanels;
     public bool refreshValues = false;
     public bool refreshReductions = false;
-    public bool inCombat = false;
+    //public bool inCombat = false;
 
-    public GameObject newMonster;
-    public GameObject monster;
-    Monster monsterInfo;
-    private bool monsterTurn, playerTurn;
+    //public GameObject newMonster;
+    //public GameObject monster;
+    //Monster monsterInfo;
+    //private bool monsterTurn, playerTurn;
 
     public Transform woodcuttingPanelParent;
     public List<WoodcuttingSO> woodcuttingSOs;
-    public List<PanelUpdater> woodcuttingPanels;
+    public List<SkillUpdater> woodcuttingPanels;
 
     private bool woodcuttingSkillActive;
-    private PanelUpdater woodcuttingPanel;
+    private SkillUpdater woodcuttingPanel;
 
     private void Awake()
     {
@@ -64,7 +63,7 @@ public class Skilling : MonoBehaviour
         foreach (var woodcuttingSO in woodcuttingSOs.OrderBy(c => c.UnlockLevel))
         {
             var newWodducttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
-            var newWoodcuttingPanel = newWodducttingSO.GetComponent<PanelUpdater>();
+            var newWoodcuttingPanel = newWodducttingSO.GetComponent<SkillUpdater>();
             newWoodcuttingPanel.UpdatePanel(woodcuttingSO);
             woodcuttingPanels.Add(newWoodcuttingPanel);
         }
@@ -272,7 +271,7 @@ public class Skilling : MonoBehaviour
         //}
     }
 
-    public void ActivateWoodcutting(PanelUpdater panel)
+    public void ActivateWoodcutting(SkillUpdater panel)
     {
         if (!woodcuttingSkillActive || woodcuttingPanel != panel)
         {
@@ -283,7 +282,7 @@ public class Skilling : MonoBehaviour
         woodcuttingPanels.Where(c => c != panel).ToList().ForEach(c => c.SetWoodcutting(false));
     }
 
-    public void DeactivateWoodcutting(PanelUpdater panel)
+    public void DeactivateWoodcutting(SkillUpdater panel)
     {
         if (woodcuttingSkillActive && woodcuttingPanel == panel)
         {

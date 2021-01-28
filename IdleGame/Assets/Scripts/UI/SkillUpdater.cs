@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelUpdater : MonoBehaviour
+public class SkillUpdater : MonoBehaviour
 {
     [Header("Text")]
     public Text txtName;
@@ -20,8 +20,22 @@ public class PanelUpdater : MonoBehaviour
     private bool isActive;
     private float skillTimer = 0f;
 
-    public bool isLocked => PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
-    
+    public bool isLocked => CheckIsLocked();
+
+    private bool CheckIsLocked()
+    {
+        switch (skillItemSO.GetType().Name)
+        {
+            case "WoodcuttingSO":
+                btnCut.onClick.AddListener(ToggleWoodcutting);
+                return PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
+
+                // case "MiningSO":
+        }
+
+        return true;
+    }
+
     public void UpdatePanel(BaseSkillItemSO skillItem)
     {
         skillItemSO = skillItem;
@@ -29,8 +43,6 @@ public class PanelUpdater : MonoBehaviour
         txtName.text = skillItemSO.Name;
         txtExpAmount.text = skillItemSO.ExpAmount.ToString();
         txtSpeed.text = $"{skillItemSO.Speed:F2} Second{(skillItemSO.Speed > 1 ? "s" : string.Empty)}";
-        btnCut.onClick.AddListener(ToggleWoodcutting);
-
         UpdateLockStatus();
     }
 
