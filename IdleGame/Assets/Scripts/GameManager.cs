@@ -9,9 +9,12 @@ public class GameManager : MonoBehaviour
     public string[] itemsHeld;
     public int[] numberOfItems;
 
+    public List<ItemSO> itemSOs;
+
     // Start is called before the first frame update
     void Start()
     {
+        itemSOs = new List<ItemSO>();
         instance = this;
 
         LoadItems();

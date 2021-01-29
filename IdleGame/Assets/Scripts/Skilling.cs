@@ -7,6 +7,17 @@ using UnityEngine.UI;
 public class Skilling : MonoBehaviour
 {
     public static Skilling instance;
+
+    [Header("UI")]
+    public string unlockText = "Next unlock at level {0}";
+    [Header("Woodcutting")]
+    public Transform woodcuttingPanelParent;
+    public List<WoodcuttingSO> woodcuttingSOs;
+    [HideInInspector]
+    public List<SkillUpdater> woodcuttingPanels;
+    private bool woodcuttingSkillActive;
+    private SkillUpdater woodcuttingPanel;
+    [Header("General")]
     //public Slider[] skillSliders;
     public Slider playerHealth;
     //private float skillTimer;
@@ -28,12 +39,7 @@ public class Skilling : MonoBehaviour
     //Monster monsterInfo;
     //private bool monsterTurn, playerTurn;
 
-    public Transform woodcuttingPanelParent;
-    public List<WoodcuttingSO> woodcuttingSOs;
-    public List<SkillUpdater> woodcuttingPanels;
 
-    private bool woodcuttingSkillActive;
-    private SkillUpdater woodcuttingPanel;
 
     private void Awake()
     {
@@ -62,8 +68,9 @@ public class Skilling : MonoBehaviour
 
         foreach (var woodcuttingSO in woodcuttingSOs.OrderBy(c => c.UnlockLevel))
         {
-            var newWodducttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
-            var newWoodcuttingPanel = newWodducttingSO.GetComponent<SkillUpdater>();
+            var newWooducttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
+            var newWoodcuttingPanel = newWooducttingSO.GetComponent<SkillUpdater>();
+            newWoodcuttingPanel.name = $"{woodcuttingSO.Name.Replace(" ", "")}_Panel";
             newWoodcuttingPanel.UpdatePanel(woodcuttingSO);
             woodcuttingPanels.Add(newWoodcuttingPanel);
         }

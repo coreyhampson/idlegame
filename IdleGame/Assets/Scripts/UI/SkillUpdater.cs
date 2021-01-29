@@ -16,7 +16,6 @@ public class SkillUpdater : MonoBehaviour
     public GameObject treeContent;
     public BaseSkillItemSO skillItemSO;
 
-    private const string lockedText = "Unlocks at Level {0}!";
     private bool isActive;
     private float skillTimer = 0f;
 
@@ -85,7 +84,7 @@ public class SkillUpdater : MonoBehaviour
                 sliderExp.value = 0f;
             }
         }
-        else
+        else // Exp bar reached 100% (Exp gain achieved)
         {
             skillTimer = 0f;
             sliderExp.value = 0f;
@@ -109,7 +108,7 @@ public class SkillUpdater : MonoBehaviour
         {
             treeContent.SetActive(false);
             txtLocked.gameObject.SetActive(true);
-            txtLocked.text = string.Format(lockedText, skillItemSO.UnlockLevel);
+            txtLocked.text = string.Format(Skilling.instance.unlockText, skillItemSO.UnlockLevel);
         }
         else
         {
