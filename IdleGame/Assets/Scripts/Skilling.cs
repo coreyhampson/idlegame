@@ -11,8 +11,11 @@ public class Skilling : MonoBehaviour
     [Header("UI")]
     public string unlockText = "Next unlock at level {0}";
     [Header("Woodcutting")]
-    public Transform woodcuttingPanelParent;
-    public List<WoodcuttingSO> woodcuttingSOs;
+    [Help("Create Woodcutting Objects in Data/Woodcutting:\r\n" +
+        "Right-Click > Create > Custom Data > Skills > \"New Woodcutting Item\"\r\n\r\n" +
+        "Assign to \"Woodcutting Objects\" list below\r\n(auto-populates in-game ordered by 'UnlockLevel')", UnityEditor.MessageType.Info)]
+    private Transform woodcuttingPanelParent;
+    public List<WoodcuttingSO> woodcuttingObjects;
     [HideInInspector]
     public List<SkillUpdater> woodcuttingPanels;
     private bool woodcuttingSkillActive;
@@ -66,7 +69,9 @@ public class Skilling : MonoBehaviour
 
         //inCombat = false;
 
-        foreach (var woodcuttingSO in woodcuttingSOs.OrderBy(c => c.UnlockLevel))
+        woodcuttingPanelParent = GameObject.Find("Woodcutting_PanelParent").transform;
+
+        foreach (var woodcuttingSO in woodcuttingObjects.OrderBy(c => c.UnlockLevel))
         {
             var newWooducttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
             var newWoodcuttingPanel = newWooducttingSO.GetComponent<SkillUpdater>();
