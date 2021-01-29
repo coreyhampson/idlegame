@@ -9,6 +9,8 @@ public class Skilling : MonoBehaviour
     public static Skilling instance;
 
     [Header("UI")]
+    [TextArea]
+    [Tooltip("This is a rich textbox (supports basic markdown)\r\n\r\n\"{0}\" = Woodcutting Object 'UnlockLevel'")]
     public string unlockText = "Next unlock at level {0}";
     [Header("Woodcutting")]
     [Help("Create Woodcutting Objects in Data/Woodcutting:\r\n" +

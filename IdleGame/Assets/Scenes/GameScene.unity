@@ -4913,7 +4913,7 @@ GameObject:
   - component: {fileID: 406583287}
   - component: {fileID: 406583288}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: _GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16673,8 +16673,8 @@ GameObject:
   - component: {fileID: 1373092040}
   - component: {fileID: 1373092043}
   m_Layer: 5
-  m_Name: woodcuttingPanels
-  m_TagString: Untagged
+  m_Name: Woodcutting_PanelParent
+  m_TagString: Woodcutting
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20124,7 +20124,7 @@ GameObject:
   - component: {fileID: 1609466678}
   - component: {fileID: 1609466677}
   m_Layer: 0
-  m_Name: SkillManager
+  m_Name: _SkillManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20143,16 +20143,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlockText: Next unlock at level {0}
-  woodcuttingPanelParent: {fileID: 1373092039}
-  woodcuttingSOs:
+  woodcuttingObjects:
+  - {fileID: 11400000, guid: 9da29e071d11deb40acb14fe2411b35b, type: 2}
   - {fileID: 11400000, guid: d8e03affacc34ad4095114a0e36e0909, type: 2}
   - {fileID: 11400000, guid: bc34a86f723c6da409451f2c5eb15019, type: 2}
   - {fileID: 11400000, guid: aebd4dc8867ff0f4182fa1cd389e0c8a, type: 2}
+  - {fileID: 11400000, guid: e5809df3a933384479d45bbe9ed2d4a0, type: 2}
   - {fileID: 11400000, guid: adad54b27a5ccd24f80ac3d78acb845e, type: 2}
   - {fileID: 11400000, guid: 148a490fcff7f9148a9d2c738fe747a9, type: 2}
-  - {fileID: 11400000, guid: 9da29e071d11deb40acb14fe2411b35b, type: 2}
-  - {fileID: 11400000, guid: e5809df3a933384479d45bbe9ed2d4a0, type: 2}
   woodcuttingPanels: []
+  woodcuttingPanel: {fileID: 0}
   playerHealth: {fileID: 780079726}
   expNextLevel:
   - {fileID: 1541569325}
