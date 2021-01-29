@@ -21,12 +21,16 @@ public class SkillUpdater : MonoBehaviour
 
     public bool isLocked => CheckIsLocked();
 
+    private void Awake()
+    {
+        btnCut.onClick.AddListener(ToggleWoodcutting);
+    }
+
     private bool CheckIsLocked()
     {
         switch (skillItemSO.GetType().Name)
         {
             case "WoodcuttingSO":
-                btnCut.onClick.AddListener(ToggleWoodcutting);
                 return PlayerStats.instance.woodcuttingLevel < skillItemSO.UnlockLevel;
 
                 // case "MiningSO":

@@ -19,7 +19,7 @@ public class Skilling : MonoBehaviour
     [HideInInspector]
     public List<SkillUpdater> woodcuttingPanels;
     private bool woodcuttingSkillActive;
-    private SkillUpdater woodcuttingPanel;
+    public SkillUpdater woodcuttingPanel;
     [Header("General")]
     //public Slider[] skillSliders;
     public Slider playerHealth;
@@ -73,8 +73,8 @@ public class Skilling : MonoBehaviour
 
         foreach (var woodcuttingSO in woodcuttingObjects.OrderBy(c => c.UnlockLevel))
         {
-            var newWooducttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
-            var newWoodcuttingPanel = newWooducttingSO.GetComponent<SkillUpdater>();
+            var newWoodcuttingSO = Instantiate(Resources.Load("Prefabs/UI/WoodcuttingPanel") as GameObject, woodcuttingPanelParent);
+            var newWoodcuttingPanel = newWoodcuttingSO.GetComponent<SkillUpdater>();
             newWoodcuttingPanel.name = $"{woodcuttingSO.Name.Replace(" ", "")}_Panel";
             newWoodcuttingPanel.UpdatePanel(woodcuttingSO);
             woodcuttingPanels.Add(newWoodcuttingPanel);
