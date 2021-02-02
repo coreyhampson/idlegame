@@ -1,9 +1,11 @@
 ﻿using Assets.Scripts.ScriptableObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
 public class Skilling : MonoBehaviour
 {
     public static Skilling instance;
@@ -16,12 +18,12 @@ public class Skilling : MonoBehaviour
     [Help("Create Woodcutting Objects in Data/Woodcutting:\r\n" +
         "Right-Click > Create > Custom Data > Skills > \"New Woodcutting Item\"\r\n\r\n" +
         "Assign to \"Woodcutting Objects\" list below\r\n(auto-populates in-game ordered by 'UnlockLevel')", UnityEditor.MessageType.Info)]
+    public SkillUpdater woodcuttingPanel;
     private Transform woodcuttingPanelParent;
     public List<WoodcuttingSO> woodcuttingObjects;
     [HideInInspector]
     public List<SkillUpdater> woodcuttingPanels;
     private bool woodcuttingSkillActive;
-    public SkillUpdater woodcuttingPanel;
     [Header("General")]
     //public Slider[] skillSliders;
     public Slider playerHealth;
