@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.ScriptableObjects;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -96,7 +97,8 @@ public class SkillUpdater : MonoBehaviour
             switch (skillItemSO.GetType().Name)
             {
                 case "WoodcuttingSO":
-                    GameManager.instance.AddItem("Evergreen Log", 1);
+                    GameManager.instance.AddItem(skillItemSO, 1);
+                    Debug.LogWarning($"Item: {skillItemSO.name} does not have an Item Prefab assigned!");
                     PlayerStats.instance.AddWoodcuttingExperience(skillItemSO.ExpAmount);
                     PlayerStats.instance.SaveStats();
                     break;

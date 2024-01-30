@@ -77,14 +77,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddItem(string itemToAdd, int itemAmount)
+    public void AddItem(Item itemToAdd, int itemAmount)
     {
         int newItemPosition = 0;
         bool foundSpace = false;
 
         for(int i = 0; i < itemsHeld.Length; i++)
         {
-            if(itemsHeld[i] == "" || itemsHeld[i] == itemToAdd)
+            if(itemsHeld[i] == "" || itemsHeld[i] == itemToAdd.itemName)
             {
                 newItemPosition = i;
                 i = itemsHeld.Length;
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
             bool itemExists = false;
             for(int i = 0; i < referenceItems.Length; i++)
             {
-                if(referenceItems[i].itemName == itemToAdd)
+                if(referenceItems[i].itemName == itemToAdd.itemName)
                 {
                     itemExists = true;
                     referenceItems[i].itemAmount += itemAmount;
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
 
             if(itemExists)
             {
-                itemsHeld[newItemPosition] = itemToAdd;
+                itemsHeld[newItemPosition] = itemToAdd.itemName;
                 numberOfItems[newItemPosition] += itemAmount;
             }
             else
