@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e306dc390896e24a81f714b8a439888, type: 3}
   m_Name: Evergreen
   m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: 6cd368c4a7d056346b1429175772688d, type: 3}
   Name: Evergreen Tree
+  Description: Use to make a basic fire!
   Speed: 3
   UnlockLevel: 1
   ExpAmount: 10
+  BaseSellValue: 5

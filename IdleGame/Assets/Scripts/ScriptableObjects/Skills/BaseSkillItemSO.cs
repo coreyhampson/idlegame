@@ -10,5 +10,6 @@ namespace Assets.Scripts.ScriptableObjects
         public float Speed;
         public int UnlockLevel;
         public int ExpAmount;
+        public float BaseSellValue;
     }
 }

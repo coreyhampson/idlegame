@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e306dc390896e24a81f714b8a439888, type: 3}
   m_Name: Maple
   m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: f1976185834b5004b9331f8a411126c0, type: 3}
   Name: Maple Tree
+  Description: 
   Speed: 5
   UnlockLevel: 35
   ExpAmount: 75
+  BaseSellValue: 50

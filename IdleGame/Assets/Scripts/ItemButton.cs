@@ -1,31 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.ScriptableObjects;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemButton : MonoBehaviour
 {
+    public BaseSkillItemSO key;
     public Image buttonImage;
     public Text amountText;
     public int buttonValue;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        amountText.text = "";
     }
 
     public void Press()
     {
-        if(GameManager.instance.itemsHeld[buttonValue] != "")
+        if (GameManager.instance.inventoryItems.Any())
         {
-            UIMenu.instance.SelectItem(GameManager.instance.GetItemDetails(GameManager.instance.itemsHeld[buttonValue]));
+            UIMenu.instance.SelectItem(key);
         }
         else
         {

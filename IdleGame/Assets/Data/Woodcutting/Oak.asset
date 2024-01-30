@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e306dc390896e24a81f714b8a439888, type: 3}
   m_Name: Oak
   m_EditorClassIdentifier: 
+  itemSprite: {fileID: 21300000, guid: 3061711f1ac34724786c37ae63b941b4, type: 3}
   Name: Oak Tree
+  Description: 
   Speed: 1
   UnlockLevel: 6
   ExpAmount: 8
+  BaseSellValue: 10
