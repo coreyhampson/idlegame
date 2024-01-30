@@ -86,8 +86,17 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    public void ClearSelected()
+    {
+        foreach (var slot in inventorySlots.Where(x => x.GetComponent<Image>().color == Color.white))
+        {
+            slot.GetComponent<Image>().color = new Color32(255, 255, 255, 150);
+        }
+    }
+
     public void SelectItem(BaseSkillItemSO newItem)
     {
+        ClearSelected();
         activeItem = newItem;
         
         itemName.text = activeItem.Name;

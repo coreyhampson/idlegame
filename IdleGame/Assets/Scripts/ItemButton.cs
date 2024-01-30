@@ -12,21 +12,31 @@ public class ItemButton : MonoBehaviour
 
     private void Start()
     {
+        ClearAllText();
+    }
+
+    void ClearAllText()
+    {
         amountText.text = "";
+
+        UIMenu.instance.itemName.text = "";
+        UIMenu.instance.itemDescription.text = "";
+        UIMenu.instance.itemValue.text = "";
+        UIMenu.instance.activeItem = null;
     }
 
     public void Press()
     {
-        if (GameManager.instance.inventoryItems.Any())
+        if (key != null)
         {
             UIMenu.instance.SelectItem(key);
         }
         else
         {
-            UIMenu.instance.itemName.text = "Item Name";
-            UIMenu.instance.itemDescription.text = "Item Description";
-            UIMenu.instance.itemValue.text = "Item Value";
-            UIMenu.instance.activeItem = null;
+            ClearAllText();
         }
+
+        UIMenu.instance.ClearSelected();
+        GetComponent<Image>().color = Color.white;
     }
 }
